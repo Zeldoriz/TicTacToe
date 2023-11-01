@@ -1,0 +1,133 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: "Montserrat", sans-serif;
+    border: none;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap");
+
+:root {
+    --dark-gray: #1a2a32;
+    --gray: #2e4756;
+    --turquoise: #3cc4bf;
+    --yellow: #f2b147;
+    --light-gray: #d3d3d3;
+}
+
+.turquoise {
+    color: var(--turquoise);
+}
+
+.yellow {
+    color: var(--yellow);
+}
+
+.light-gray {
+    color: var(--light-gray);
+}
+
+body,
+html {
+    height: 100%;
+}
+
+.shadow {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+        rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+body {
+    background-color: var(--dark-gray);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: 50px repeat(3, 150px) 60px;
+    gap: 20px;
+}
+
+.grid-cell {
+    border-radius: 10px;
+}
+
+.turn {
+    grid-area: 1/3/2/1;
+    display: flex;
+    align-items: center;
+}
+
+.turn p {
+    font-size: 10pt;
+    margin-left: 20px;
+}
+
+.turn i {
+    font-size: 1.75rem;
+    margin-left: 10px;
+}
+
+.action {
+    background-color: rgb(211, 211, 211, 0.05);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.action p {
+    margin-left: 20px;
+}
+
+.square {
+    background-color: var(--gray);
+}
+
+.square:hover {
+    opacity: 80%;
+}
+
+.score {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 10pt;
+}
+
+.score p {
+    margin-top: 5px;
+}
+
+.player1 {
+    background-color: var(--turquoise);
+}
+
+.ties {
+    background-color: var(--light-gray);
+}
+
+.player2 {
+    background-color: var(--yellow);
+}
+
+.credits {
+    color: var(--light-gray);
+    padding-top: 30px;
+    text-align: center;
+}
+
+.credits a {
+    text-decoration: none;
+    color: var(--yellow);
+}
+
+.andrew {
+    padding-top: 10px;
+}

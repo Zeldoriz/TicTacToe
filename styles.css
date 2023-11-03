@@ -11,10 +11,15 @@
 
 :root {
     --dark-gray: #1a2a32;
+    --med-gray: #203139;
     --gray: #2e4756;
     --turquoise: #3cc4bf;
     --yellow: #f2b147;
     --light-gray: #d3d3d3;
+}
+
+.bg-med-gray {
+    background-color: var(--med-gray);
 }
 
 .turquoise {
@@ -29,6 +34,10 @@
     color: var(--light-gray);
 }
 
+.hidden {
+    display: none !important;
+}
+
 body,
 html {
     height: 100%;
@@ -38,6 +47,11 @@ html {
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
         rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
+
+.border {
+    border: 1px solid rgba(211, 211, 211, 0.4) !important;
+}
+
 
 body {
     background-color: var(--dark-gray);
@@ -75,18 +89,50 @@ body {
 }
 
 .action {
-    background-color: rgb(211, 211, 211, 0.05);
+    position: relative;
     display: flex;
-    justify-content: left;
-    align-items: center;
 }
 
-.action p {
-    margin-left: 20px;
+.action-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    min-width: 150px;
+    background-color: rgba(211, 211, 211, 0.05);
+}
+
+.action-btn:focus,
+.action-btn:hover{
+    background-color: var(--med-gray);
+}
+
+.dropdown-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+    top: 60px;
+    z-index: 1;
+    height: 80px;
+    width: 150px;
+}
+
+.dropdown-menu button {
+    margin-left: 25px;
 }
 
 .square {
     background-color: var(--gray);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square i{
+    font-size: 35pt;
 }
 
 .square:hover {
@@ -125,9 +171,16 @@ body {
 
 .credits a {
     text-decoration: none;
-    color: var(--yellow);
+}
+
+.chika a {
+    color: var(--turquoise);
 }
 
 .andrew {
     padding-top: 10px;
+}
+
+.andrew a {
+    color: var(--yellow);
 }

@@ -26,260 +26,132 @@ let tl = ".top-left",
     bm = ".bot-mid",
     br = ".bot-right";
 
-let turnCounter = 1;
+let grid = [tl, tm, tr, ml, mm, mr, bl, bm, br]
 
-$(tl).on('click', function () {
-    if (!($(tl + " i").hasClass("fa-o")) && !($(tl + " i").hasClass("fa-x"))) {
-        if (turnCounter % 2 == 0) {
-            $(tl + " i").addClass("fa-o")
-            $(tl + " i").addClass("yellow")
-            $(".turn p").html("Player 1, you're up!")
-            $(".turn p").removeClass("yellow")
-            $(".turn p").addClass("turquoise")
-            $(".turn i").removeClass("fa-o")
-            $(".turn i").addClass("fa-x")
-            $(".turn i").removeClass("yellow")
-            $(".turn i").addClass("turquoise")
-        } else {
-            $(tl + " i").addClass("fa-x")
-            $(tl + " i").addClass("turquoise")
-            $(".turn p").html("Player 2, you're up!")
-            $(".turn p").removeClass("turquoise")
-            $(".turn p").addClass("yellow")
-            $(".turn i").removeClass("fa-x")
-            $(".turn i").addClass("fa-o")
-            $(".turn i").removeClass("turquoise")
-            $(".turn i").addClass("yellow")
-        }
-        turnCounter++
+let turnCounter = 1,
+    player1Wins = 0,
+    player2Wins = 0,
+    ties = 0;
+
+function p1Turn() {
+    $(".turn p").html("Player 1, you're up!")
+    $(".turn p").removeClass("yellow")
+    $(".turn p").addClass("turquoise")
+
+    $(".turn i").removeClass("fa-o")
+    $(".turn i").addClass("fa-x")
+    $(".turn i").removeClass("yellow")
+    $(".turn i").addClass("turquoise")
+}
+
+function p2Turn() {
+    $(".turn p").html("Player 2, you're up!")
+    $(".turn p").removeClass("turquoise")
+    $(".turn p").addClass("yellow")
+
+    $(".turn i").removeClass("fa-x")
+    $(".turn i").addClass("fa-o")
+    $(".turn i").removeClass("turquoise")
+    $(".turn i").addClass("yellow")
+}
+
+function resetGame() {
+    grid.forEach(grid => {
+        $(grid + " i").removeClass("fa-o")
+        $(grid + " i").removeClass("fa-x")
+        $(grid + " i").removeClass("yellow")
+        $(grid + " i").removeClass("turquoise")
+
+        p1Turn()
+    });
+    turnCounter = 0
+}
+
+function winCond(player) {
+    if (player == 1) {
+        console.log("Player 1 Wins")
+        player1Wins++
+    } else if (player == 2) {
+        console.log("Player 2 Wins")
+        player2Wins++
+    } else {
+        console.log("Tie")
+        ties++
     }
-});
+    resetGame()
+}
 
-$(tm).on('click', function () {
-    if (!($(tm + " i").hasClass("fa-o")) && !($(tm + " i").hasClass("fa-x"))) {
-        if (turnCounter % 2 == 0) {
-            $(tm + " i").addClass("fa-o")
-            $(tm + " i").addClass("yellow")
-            $(".turn p").html("Player 1, you're up!")
-            $(".turn p").removeClass("yellow")
-            $(".turn p").addClass("turquoise")
-            $(".turn i").removeClass("fa-o")
-            $(".turn i").addClass("fa-x")
-            $(".turn i").removeClass("yellow")
-            $(".turn i").addClass("turquoise")
+(grid).forEach(grid => {
+    $(grid).on('click', function () {
+        if (!($(grid + " i").hasClass("fa-o")) && !($(grid + " i").hasClass("fa-x"))) {
+            if (turnCounter % 2 == 0) {
+                $(grid + " i").addClass("fa-o")
+                $(grid + " i").addClass("yellow")
+                p1Turn()
+            } else {
+                $(grid + " i").addClass("fa-x")
+                $(grid + " i").addClass("turquoise")
+                p2Turn()
+            }
 
-        } else {
-            $(tm + " i").addClass("fa-x")
-            $(tm + " i").addClass("turquoise")
-            $(".turn p").html("Player 2, you're up!")
-            $(".turn p").removeClass("turquoise")
-            $(".turn p").addClass("yellow")
-            $(".turn i").removeClass("fa-x")
-            $(".turn i").addClass("fa-o")
-            $(".turn i").removeClass("turquoise")
-            $(".turn i").addClass("yellow")
+            if (!($(".turn p").hasClass("animate-turn-para"))) {
+                $(".turn i").toggleClass("animate-turn-icon")
+                $(".turn p").toggleClass("animate-turn-para")
+            } else {
+
+                setTimeout(function () {
+                    $(".turn i").toggleClass("animate-turn-icon")
+                    $(".turn p").toggleClass("animate-turn-para")
+                }, 0);
+                $(".turn i").toggleClass("animate-turn-icon")
+                $(".turn p").toggleClass("animate-turn-para")
+            }
+
+            // Horizontal Possibilities
+            if ($(tl + " i").hasClass("fa-x") && $(tm + " i").hasClass("fa-x") && $(tr + " i").hasClass("fa-x")) {
+                winCond(1)
+            } else if ($(tl + " i").hasClass("fa-o") && $(tm + " i").hasClass("fa-o") && $(tr + " i").hasClass("fa-o")) {
+                winCond(2)
+            } else if ($(ml + " i").hasClass("fa-x") && $(mm + " i").hasClass("fa-x") && $(mr + " i").hasClass("fa-x")) {
+                winCond(1)
+            } else if ($(ml + " i").hasClass("fa-o") && $(mm + " i").hasClass("fa-o") && $(mr + " i").hasClass("fa-o")) {
+                winCond(2)
+            } else if ($(bl + " i").hasClass("fa-x") && $(bm + " i").hasClass("fa-x") && $(br + " i").hasClass("fa-x")) {
+                winCond(1)
+            } else if ($(bl + " i").hasClass("fa-o") && $(bm + " i").hasClass("fa-o") && $(br + " i").hasClass("fa-o")) {
+                winCond(2)
+            }
+            // Vertical Possibilities
+            else if ($(tl + " i").hasClass("fa-x") && $(ml + " i").hasClass("fa-x") && $(bl + " i").hasClass("fa-x")) {
+                winCond(1)
+            } else if ($(tl + " i").hasClass("fa-o") && $(ml + " i").hasClass("fa-o") && $(bl + " i").hasClass("fa-o")) {
+                winCond(2)
+            } else if ($(tm + " i").hasClass("fa-x") && $(mm + " i").hasClass("fa-x") && $(bm + " i").hasClass("fa-x")) {
+                winCond(1)
+            } else if ($(tm + " i").hasClass("fa-o") && $(mm + " i").hasClass("fa-o") && $(bm + " i").hasClass("fa-o")) {
+                winCond(2)
+            } else if ($(tr + " i").hasClass("fa-x") && $(mr + " i").hasClass("fa-x") && $(br + " i").hasClass("fa-x")) {
+                winCond(1)
+            } else if ($(tr + " i").hasClass("fa-o") && $(mr + " i").hasClass("fa-o") && $(br + " i").hasClass("fa-o")) {
+                winCond(2)
+            }
+            // Diagonal Possibilities
+            else if ($(tl + " i").hasClass("fa-x") && $(mm + " i").hasClass("fa-x") && $(br + " i").hasClass("fa-x")) {
+                winCond(1)
+            } else if ($(tl + " i").hasClass("fa-o") && $(mm + " i").hasClass("fa-o") && $(br + " i").hasClass("fa-o")) {
+                winCond(2)
+            } else if ($(tr + " i").hasClass("fa-x") && $(mm + " i").hasClass("fa-x") && $(bl + " i").hasClass("fa-x")) {
+                winCond(1)
+            } else if ($(tr + " i").hasClass("fa-o") && $(mm + " i").hasClass("fa-o") && $(bl + " i").hasClass("fa-o")) {
+                winCond(2)
+            } else if (turnCounter == 9) {
+                winCond(3)
+            }
+
+            $(".player1 p").html(player1Wins + " Wins")
+            $(".player2 p").html(player2Wins + " Wins")
+            $(".ties p").html(ties + " Ties")
+            turnCounter++
         }
-        turnCounter++
-    }
-});
-
-$(tr).on('click', function () {
-    if (!($(tr + " i").hasClass("fa-o")) && !($(tr + " i").hasClass("fa-x"))) {
-        if (turnCounter % 2 == 0) {
-            $(tr + " i").addClass("fa-o")
-            $(tr + " i").addClass("yellow")
-            $(".turn p").html("Player 1, you're up!")
-            $(".turn p").removeClass("yellow")
-            $(".turn p").addClass("turquoise")
-            $(".turn i").removeClass("fa-o")
-            $(".turn i").addClass("fa-x")
-            $(".turn i").removeClass("yellow")
-            $(".turn i").addClass("turquoise")
-
-        } else {
-            $(tr + " i").addClass("fa-x")
-            $(tr + " i").addClass("turquoise")
-            $(".turn p").html("Player 2, you're up!")
-            $(".turn p").removeClass("turquoise")
-            $(".turn p").addClass("yellow")
-            $(".turn i").removeClass("fa-x")
-            $(".turn i").addClass("fa-o")
-            $(".turn i").removeClass("turquoise")
-            $(".turn i").addClass("yellow")
-        }
-        turnCounter++
-    }
-});
-
-$(ml).on('click', function () {
-    if (!($(ml + " i").hasClass("fa-o")) && !($(ml + " i").hasClass("fa-x"))) {
-        if (turnCounter % 2 == 0) {
-            $(ml + " i").addClass("fa-o")
-            $(ml + " i").addClass("yellow")
-            $(".turn p").html("Player 1, you're up!")
-            $(".turn p").removeClass("yellow")
-            $(".turn p").addClass("turquoise")
-            $(".turn i").removeClass("fa-o")
-            $(".turn i").addClass("fa-x")
-            $(".turn i").removeClass("yellow")
-            $(".turn i").addClass("turquoise")
-
-        } else {
-            $(ml + " i").addClass("fa-x")
-            $(ml + " i").addClass("turquoise")
-            $(".turn p").html("Player 2, you're up!")
-            $(".turn p").removeClass("turquoise")
-            $(".turn p").addClass("yellow")
-            $(".turn i").removeClass("fa-x")
-            $(".turn i").addClass("fa-o")
-            $(".turn i").removeClass("turquoise")
-            $(".turn i").addClass("yellow")
-        }
-        turnCounter++
-    }
-});
-
-$(mm).on('click', function () {
-    if (!($(mm + " i").hasClass("fa-o")) && !($(mm + " i").hasClass("fa-x"))) {
-        if (turnCounter % 2 == 0) {
-            $(mm + " i").addClass("fa-o")
-            $(mm + " i").addClass("yellow")
-            $(".turn p").html("Player 1, you're up!")
-            $(".turn p").removeClass("yellow")
-            $(".turn p").addClass("turquoise")
-            $(".turn i").removeClass("fa-o")
-            $(".turn i").addClass("fa-x")
-            $(".turn i").removeClass("yellow")
-            $(".turn i").addClass("turquoise")
-
-        } else {
-            $(mm + " i").addClass("fa-x")
-            $(mm + " i").addClass("turquoise")
-            $(".turn p").html("Player 2, you're up!")
-            $(".turn p").removeClass("turquoise")
-            $(".turn p").addClass("yellow")
-            $(".turn i").removeClass("fa-x")
-            $(".turn i").addClass("fa-o")
-            $(".turn i").removeClass("turquoise")
-            $(".turn i").addClass("yellow")
-        }
-        turnCounter++
-    }
-});
-
-$(mr).on('click', function () {
-    if (!($(mr + " i").hasClass("fa-o")) && !($(mr + " i").hasClass("fa-x"))) {
-        if (turnCounter % 2 == 0) {
-            $(mr + " i").addClass("fa-o")
-            $(mr + " i").addClass("yellow")
-            $(".turn p").html("Player 1, you're up!")
-            $(".turn p").removeClass("yellow")
-            $(".turn p").addClass("turquoise")
-            $(".turn i").removeClass("fa-o")
-            $(".turn i").addClass("fa-x")
-            $(".turn i").removeClass("yellow")
-            $(".turn i").addClass("turquoise")
-
-        } else {
-            $(mr + " i").addClass("fa-x")
-            $(mr + " i").addClass("turquoise")
-            $(".turn p").html("Player 2, you're up!")
-            $(".turn p").removeClass("turquoise")
-            $(".turn p").addClass("yellow")
-            $(".turn i").removeClass("fa-x")
-            $(".turn i").addClass("fa-o")
-            $(".turn i").removeClass("turquoise")
-            $(".turn i").addClass("yellow")
-        }
-        turnCounter++
-    }
-});
-
-$(bl).on('click', function () {
-    if (!($(bl + " i").hasClass("fa-o")) && !($(bl + " i").hasClass("fa-x"))) {
-        if (turnCounter % 2 == 0) {
-            $(bl + " i").addClass("fa-o")
-            $(bl + " i").addClass("yellow")
-            $(".turn p").html("Player 1, you're up!")
-            $(".turn p").removeClass("yellow")
-            $(".turn p").addClass("turquoise")
-            $(".turn i").removeClass("fa-o")
-            $(".turn i").addClass("fa-x")
-            $(".turn i").removeClass("yellow")
-            $(".turn i").addClass("turquoise")
-
-        } else {
-            $(bl + " i").addClass("fa-x")
-            $(bl + " i").addClass("turquoise")
-            $(".turn p").html("Player 2, you're up!")
-            $(".turn p").removeClass("turquoise")
-            $(".turn p").addClass("yellow")
-            $(".turn i").removeClass("fa-x")
-            $(".turn i").addClass("fa-o")
-            $(".turn i").removeClass("turquoise")
-            $(".turn i").addClass("yellow")
-        }
-        turnCounter++
-    }
-});
-
-$(bm).on('click', function () {
-    if (!($(bm + " i").hasClass("fa-o")) && !($(bm + " i").hasClass("fa-x"))) {
-        if (turnCounter % 2 == 0) {
-            $(bm + " i").addClass("fa-o")
-            $(bm + " i").addClass("yellow")
-            $(".turn p").html("Player 1, you're up!")
-            $(".turn p").removeClass("yellow")
-            $(".turn p").addClass("turquoise")
-            $(".turn i").removeClass("fa-o")
-            $(".turn i").addClass("fa-x")
-            $(".turn i").removeClass("yellow")
-            $(".turn i").addClass("turquoise")
-
-        } else {
-            $(bm + " i").addClass("fa-x")
-            $(bm + " i").addClass("turquoise")
-            $(".turn p").html("Player 2, you're up!")
-            $(".turn p").removeClass("turquoise")
-            $(".turn p").addClass("yellow")
-            $(".turn i").removeClass("fa-x")
-            $(".turn i").addClass("fa-o")
-            $(".turn i").removeClass("turquoise")
-            $(".turn i").addClass("yellow")
-        }
-        turnCounter++
-    }
-});
-
-$(br).on('click', function () {
-    if (!($(br + " i").hasClass("fa-o")) && !($(br + " i").hasClass("fa-x"))) {
-        if (turnCounter % 2 == 0) {
-            $(br + " i").addClass("fa-o")
-            $(br + " i").addClass("yellow")
-            $(".turn p").html("Player 1, you're up!")
-            $(".turn p").removeClass("yellow")
-            $(".turn p").addClass("turquoise")
-            $(".turn i").removeClass("fa-o")
-            $(".turn i").addClass("fa-x")
-            $(".turn i").removeClass("yellow")
-            $(".turn i").addClass("turquoise")
-
-        } else {
-            $(br + " i").addClass("fa-x")
-            $(br + " i").addClass("turquoise")
-            $(".turn p").html("Player 2, you're up!")
-            $(".turn p").removeClass("turquoise")
-            $(".turn p").addClass("yellow")
-            $(".turn i").removeClass("fa-x")
-            $(".turn i").addClass("fa-o")
-            $(".turn i").removeClass("turquoise")
-            $(".turn i").addClass("yellow")
-        }
-        turnCounter++
-    }
-});
-
-$(".square").on('click', function () {
-
-
+    })
 });
